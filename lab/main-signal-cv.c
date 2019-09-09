@@ -1,6 +1,6 @@
 #include <stdio.h>
-
-#include "mythreads.h"
+#include <pthread.h>
+//#include "mythreads.h"
 
 // 
 // simple synchronizer: allows one thread to wait for another
@@ -19,23 +19,23 @@ typedef struct __synchronizer_t {
 synchronizer_t s;
 
 void signal_init(synchronizer_t *s) {
-    Pthread_mutex_init(&s->lock, NULL);
-    Pthread_cond_init(&s->cond, NULL);
+    pthread_mutex_init(&s->lock, NULL);
+    pthread_cond_init(&s->cond, NULL);
     s->done = 0;
 }
 
 void signal_done(synchronizer_t *s) {
-    Pthread_mutex_lock(&s->lock);
+    pthread_mutex_lock(&s->lock);
     s->done = 1;
-    Pthread_cond_signal(&s->cond);
-    Pthread_mutex_unlock(&s->lock);
+    pthread_cond_signal(&s->cond);
+    pthread_mutex_unlock(&s->lock);
 }
 
 void signal_wait(synchronizer_t *s) {
-    Pthread_mutex_lock(&s->lock);
+    pthread_mutex_lock(&s->lock);
     while (s->done == 0)
-	Pthread_cond_wait(&s->cond, &s->lock);
-    Pthread_mutex_unlock(&s->lock);
+	pthread_cond_wait(&s->cond, &s->lock);
+    pthread_mutex_unlock(&s->lock);
 }
 
 void* worker(void* arg) {
@@ -47,7 +47,7 @@ void* worker(void* arg) {
 int main(int argc, char *argv[]) {
     pthread_t p;
     signal_init(&s);
-    Pthread_create(&p, NULL, worker, NULL);
+    pthread_create(&p, NULL, worker, NULL);
     signal_wait(&s);
     printf("this should print last\n");
 

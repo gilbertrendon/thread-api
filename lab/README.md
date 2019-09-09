@@ -38,4 +38,5 @@ Posible data race entre los dos hilos, admás de que se debe tener en cuenta de 
 8. Ahora observe una versión levemente modificada del código, la cual es encontrada en ```main-signal-cv.c```. Esta versión usa una variable de condición para señalizar (y asociar un lock). ¿Por qué este código es mejor que la versión previa? ¿Es la corrección, o el desempeño, o ambos?
 9. Ejecute de nuevo ```helgrind``` en ```main-signal-cv``` ¿Reporta algunos errores?
 
+![enlace](https://raw.githubusercontent.com/gilbertrendon/thread-api/master/lab/Pantallazos/FiguraP9.png)
 **Nota**: Se adjuntan los códigos para facilitar en análisis.
