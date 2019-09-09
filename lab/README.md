@@ -25,7 +25,7 @@ Al eliminar la línea balance++; de la función worker con valgrind no muestra n
 6. Ahora observe ```main-signal.c```. Este código usa una variable (```done```) para señalar que el hijo esta hecho y que el padre puede continuar. ¿Por qué este códido es ineficiente? (En que termina el padre dedicando su tiempo, si el hijo toma una gran cantidad de tiempo en completarse).
 R/En realidad aquí hay un claro uso de variable(s) de condición y aparte de que hay un inconveniente con el include "mythreads.h", lo único que puede hacer el padre antes de que termine el hijo es esperar y mientras más espere habrá más uso de cpu algo que no es muy recomendable y en la siguiente imagen podemos ver que hay posibles condiciones de carrera para lo que se podrían usar locks:
 
-![enlace](https://raw.githubusercontent.com/gilbertrendon/thread-api/lab/master/Pantallazos/FiguraP6.png)
+![enlace](https://raw.githubusercontent.com/gilbertrendon/thread-api/Pantallazos/FiguraP6.png)
 
 7. Ahora ejecute ```helgrind``` para este programa. ¿Qué reporta helgrind?, ¿Es correcto el código?
 
