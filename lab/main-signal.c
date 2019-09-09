@@ -9,14 +9,16 @@ int done = 0;
 void* worker(void* arg) {
     printf("this should print first\n");
     done = 1;
-    return NULL;
+    return 0;
 }
 
 int main(int argc, char *argv[]) {
     pthread_t p;
-   // pthread_create(&p, NULL, worker, NULL);
-   // while (done == 0)
+    pthread_create(&p, NULL, worker, NULL);
+
+    while (done == 0)
 	;
+
     printf("this should print last\n");
     return 0;
 }
