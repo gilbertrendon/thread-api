@@ -24,7 +24,7 @@ Hay un interbloqueo: El primer hilo va a querer adquirir el lock m1, si ocurre u
 Como se pudo observar en la anterior imagen: Reporta que en el hilo 3 hay una violación en el orden de adquisición de los locks. Muestra la adquisición de los locks por cada una de los hilos. Muestra que existe un error pero al parecer el compilador automáticamente corrige algunos errores en este caso 9.
 
 5. Ahora ejecute ```helgrind``` en ```main-deadlock-global.c```. Examine el código. ¿Tiene este el mismo problema que ```main-deadlock.c```? ¿Muestra ```helgrind``` el mismo reporte de error? ¿Qué dice esto a cerca de herramientas como ```helgrind```?
- Sí, se puede verificar erróneamente el orden de adquisición de los locks y decir que se adquirió sin ser así necesariamente.
+ Sí, se puede verificar erróneamente el orden de adquisición de los locks(teniendo en cuenta que se asume que un lock se debe cerrar si se inició dentro de otro lock) y decir que se adquirió sin ser así necesariamente.
 6. Ahora observe ```main-signal.c```. Este código usa una variable (```done```) para señalar que el hijo esta hecho y que el padre puede continuar. ¿Por qué este códido es ineficiente? (En que termina el padre dedicando su tiempo, si el hijo toma una gran cantidad de tiempo en completarse).
 R/En realidad aquí hay un claro uso de variable(s) de condición y aparte de que hay un inconveniente con el include "mythreads.h", lo único que puede hacer el padre antes de que termine el hijo es esperar y mientras más espere habrá más uso de cpu algo que no es muy recomendable y en la siguiente imagen podemos ver que hay posibles condiciones de carrera para lo que se podrían usar locks:
 
@@ -36,7 +36,13 @@ Al ejecutar helgrind se puede ver mas detalladamente como se apreció en la figu
 Posible data race entre los dos hilos, admás de que se debe tener en cuenta de los que se suprimen por el compilador.
 
 8. Ahora observe una versión levemente modificada del código, la cual es encontrada en ```main-signal-cv.c```. Esta versión usa una variable de condición para señalizar (y asociar un lock). ¿Por qué este código es mejor que la versión previa? ¿Es la corrección, o el desempeño, o ambos?
+
+Se corrige el problema evidenciado en el punto 6, ahora ya no es posible que se presente condición de carrera de datos como se presentaba en el punto 6. Posiblemente el desempeño no se vea muy beneficio pero se evita lo más importante.
+
 9. Ejecute de nuevo ```helgrind``` en ```main-signal-cv``` ¿Reporta algunos errores?
 
+Como se había mencionado anteriormente, se dieron los siguientes errores:
+
 ![enlace](https://raw.githubusercontent.com/gilbertrendon/thread-api/master/lab/Pantallazos/FiguraP9.png)
-**Nota**: Se adjuntan los códigos para facilitar en análisis.
+
+

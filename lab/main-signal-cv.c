@@ -10,6 +10,10 @@
 //   wait (to wait for a thread)
 //   done (to indicate thread is done)
 // 
+
+
+//Se usa una estructura para sincronizar cuando se inicializa el hilo hijo, luego se debe esperar mientras se cumple la condición estos dos métodos mencionados  pueden ser vistos
+//como señales que se van mandando para que se de el siguiente paso
 typedef struct __synchronizer_t {
     pthread_mutex_t lock;
     pthread_cond_t cond;
